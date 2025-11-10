@@ -21,7 +21,7 @@ const Error = () => {
         </p>
         <a
           href="/"
-          className="mt-6 px-4 py-2 bg-gradient-to-r from-[#0f8f2f] to-[#43c56a] text-white rounded"
+          className="mt-6 px-4 py-2 `bg-gradient-to-r` from-[#0f8f2f] to-[#43c56a] text-white rounded"
         >
           Go Back!
         </a>
