@@ -1,20 +1,21 @@
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
-import { FiMenu, FiX, FiUser, FiLogOut } from "react-icons/fi";
+import { FiMenu, FiX, FiLogOut } from "react-icons/fi";
 import { Salad } from "lucide-react";
+import { AuthContext } from "../Provider/AuthContext";
 
 const Navbar = () => {
-  const currentUser = null;
-  const handleLogout = () => {
-    console.log("Logout clicked");
-  };
-
+  const { user: currentUser, logout } = useContext(AuthContext);
   const [mobileOpen, setMobileOpen] = useState(false);
+
+  const handleLogout = () => {
+    logout();
+  };
 
   const linkBase =
     "px-3 py-2 rounded-full text-sm font-medium transition-colors";
-  const linkActive = "text-green-700 bg-green-50";
-  const linkInactive = "text-gray-600 hover:text-green-700 hover:bg-green-50";
+  const linkActive = "text-green-700 bg-green-100";
+  const linkInactive = "text-gray-600 hover:text-green-700 hover:bg-green-100";
 
   const renderLinks = (onClick) => (
     <>
@@ -41,25 +42,22 @@ const Navbar = () => {
   );
 
   return (
-    <nav className="sticky top-0 z-50 bg-white/90 backdrop-blur border-b border-gray-100">
+    <nav className="sticky top-0 z-50 bg-white/50 backdrop-blur border-b border-gray-200">
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
-          
           <Link to="/" className="flex items-center gap-3">
             <span className="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-green-600 text-white shadow-sm">
-              <Salad/>
+              <Salad />
             </span>
             <span className="text-xl font-semibold text-gray-900">
               PlateShare
             </span>
           </Link>
 
-          
           <div className="hidden md:flex items-center gap-2">
             {renderLinks()}
           </div>
 
-          
           <div className="hidden md:flex items-center gap-3">
             {currentUser ? (
               <div className="relative flex items-center gap-3">
@@ -85,7 +83,7 @@ const Navbar = () => {
               <div className="flex items-center gap-2">
                 <Link
                   to="/login"
-                  className="px-4 py-2 rounded-full text-sm font-semibold text-gray-700 hover:text-green-700 hover:bg-green-50 transition-colors"
+                  className="px-4 py-2 rounded-full text-sm font-semibold text-gray-700 hover:text-green-700 hover:bg-green-100 transition-colors"
                 >
                   Login
                 </Link>
@@ -99,7 +97,6 @@ const Navbar = () => {
             )}
           </div>
 
-          
           <button
             type="button"
             className="md:hidden inline-flex items-center justify-center w-10 h-10 rounded-lg text-gray-700 hover:bg-gray-100 transition"
@@ -115,7 +112,6 @@ const Navbar = () => {
           </button>
         </div>
 
-       
         {mobileOpen && (
           <div className="md:hidden pb-4 border-t border-gray-100">
             <div className="flex flex-col gap-2 pt-4">
@@ -155,7 +151,7 @@ const Navbar = () => {
                   <Link
                     to="/login"
                     onClick={() => setMobileOpen(false)}
-                    className="flex-1 text-center px-4 py-2 rounded-full text-sm font-semibold text-gray-700 hover:text-green-700 hover:bg-green-50 transition-colors"
+                    className="flex-1 text-center px-4 py-2 rounded-full text-sm font-semibold text-gray-700 hover:text-green-700 hover:bg-green-100 transition-colors"
                   >
                     Login
                   </Link>
