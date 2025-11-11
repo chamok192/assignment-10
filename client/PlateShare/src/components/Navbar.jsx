@@ -42,7 +42,7 @@ const Navbar = () => {
   );
 
   return (
-    <nav className="sticky top-0 z-50 bg-white/50 backdrop-blur border-b border-gray-200">
+    <nav className="sticky top-0 z-50 bg-white/70 backdrop-blur border-b border-gray-200">
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           <Link to="/" className="flex items-center gap-3">
