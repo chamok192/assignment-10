@@ -20,9 +20,10 @@ const AvailableFoods = () => {
         </div>
 
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
-        {data.map(foods=> <FoodCard key={foods.id} foods={foods} />)}
+        {data.map((foods) => (
+          <FoodCard key={foods._id} foods={foods} />
+        ))}
       </div>
-
       </div>
     </Container>
   );

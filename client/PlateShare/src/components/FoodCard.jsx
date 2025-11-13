@@ -1,30 +1,46 @@
 import React from "react";
 import { FiClock, FiCalendar, FiMapPin } from "react-icons/fi";
 
-export const FoodCard = (foods) => {
-  const { id, foodName, additionalNotes, foodImage, availability, foodQuantity, expireDate, pickupLocation, donatorName, donatorImage } = foods;
+
+export const FoodCard = ({ foods }) => {
+
+  const {
+    id,
+    foodName,
+    additionalNotes,
+    foodImage,
+    availability,
+    foodQuantity,
+    expireDate,
+    pickupLocation,
+    donatorName,
+    donatorImage,
+  } = foods;
+  const isAvailable = availability === "Available";
   return (
     <div className="bg-white rounded-2xl shadow-lg overflow-hidden max-w-sm mx-auto hover:shadow-xl transition-shadow duration-300">
       <div className="relative">
-        <img src={foodImage} alt={foodName} className="w-full h-48 object-cover" />
+        <img
+          src={foodImage}
+          alt={foodName}
+          className="w-full h-48 object-cover"
+        />
 
         <div className="absolute top-3 left-3">
-          {id.map((id, index) => (
             <span
-              key={index}
               className="bg-white/90 backdrop-blur-sm text-gray-700 px-3 py-1 rounded-full text-sm font-medium"
             >
               {id}
             </span>
-          ))}
-        </div>
+        </div> 
 
         <div className="absolute top-3 right-3">
           <span
-            className={`px-3 py-1 rounded-full text-sm font-medium ${isAvailable
+            className={`px-3 py-1 rounded-full text-sm font-medium ${
+              isAvailable
                 ? "bg-green-100 text-green-800"
                 : "bg-red-100 text-red-800"
-              }`}
+            }`}
           >
             {availability}
           </span>
