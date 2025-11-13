@@ -9,7 +9,11 @@ import Home from "../Pages/Home";
 import Login from "../Pages/Login";
 
 import Signup from "../Pages/Signup";
+
 import AvailableFoods from "../Pages/AvailableFoods";
+import AddFood from "../Pages/AddFood";
+import PrivateRoute from "./PrivateRoute";
+
 const router = createBrowserRouter([
   {
     path: "/",
@@ -22,10 +26,21 @@ const router = createBrowserRouter([
         index: true,
         element: <Home />,
       },
+
       {
         path: "/available-foods",
+
         element: <AvailableFoods />,
+
         loader: () => fetch("http://localhost:3000/foods"),
+      },
+      {
+        path: "/add-food",
+        element: (
+          <PrivateRoute>
+            <AddFood />
+          </PrivateRoute>
+        ),
       },
 
       {
