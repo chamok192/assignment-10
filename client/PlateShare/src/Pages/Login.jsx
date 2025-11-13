@@ -111,7 +111,10 @@ const Login = () => {
               onClick={google}
               className="cursor-pointer w-full inline-flex items-center justify-center rounded-lg border border-gray-300 bg-white px-4 py-2.5 text-sm font-semibold text-gray-700 hover:bg-gray-50"
             >
-              <span><FcGoogle className="mr-2 text-xl" /></span>Login with Google
+              <span>
+                <FcGoogle className="mr-2 text-xl" />
+              </span>
+              Login with Google
             </button>
           </div>
 

@@ -5,28 +5,36 @@ import MainLayout from "../layout/MainLayout";
 import Error from "../Pages/Error";
 
 import Home from "../Pages/Home";
-import Login from "../Pages/Login";
-import Signup from "../Pages/Signup";
 
+import Login from "../Pages/Login";
+
+import Signup from "../Pages/Signup";
+import AvailableFoods from "../Pages/AvailableFoods";
 const router = createBrowserRouter([
   {
     path: "/",
     element: <MainLayout />,
     errorElement: <Error />,
+    hydrateFallbackElement: <div>Loading...</div>,
 
     children: [
       {
         index: true,
-
         element: <Home />,
       },
+      {
+        path: "/available-foods",
+        element: <AvailableFoods />,
+        loader: () => fetch("http://localhost:3000/foods"),
+      },
 
       {
-        path: "login",
+        path: "/login",
         element: <Login />,
       },
+
       {
-        path: "signup",
+        path: "/signup",
         element: <Signup />,
       },
     ],

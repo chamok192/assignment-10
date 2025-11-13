@@ -1,8 +1,9 @@
 import React, { useContext, useState } from "react";
 import { Link, NavLink } from "react-router-dom";
 import { FiMenu, FiX, FiLogOut } from "react-icons/fi";
-import { Salad } from "lucide-react";
+
 import { AuthContext } from "../Provider/AuthContext";
+import { Salad } from "lucide-react";
 
 const Navbar = () => {
   const { user: currentUser, logout } = useContext(AuthContext);
@@ -29,8 +30,9 @@ const Navbar = () => {
       >
         Home
       </NavLink>
+
       <NavLink
-        to="/plants"
+        to="/available-foods"
         className={({ isActive }) =>
           `${linkBase} ${isActive ? linkActive : linkInactive}`
         }
@@ -46,8 +48,8 @@ const Navbar = () => {
       <div className="container mx-auto px-4">
         <div className="flex h-16 items-center justify-between">
           <Link to="/" className="flex items-center gap-3">
-            <span className="inline-flex items-center justify-center w-9 h-9 rounded-xl bg-green-600 text-white shadow-sm">
-              <Salad />
+            <span className="inline-flex items-center justify-center w-12 h-12 rounded-xl bg-green-600 text-white shadow-sm">
+              <Salad className="h-8 w-8" />
             </span>
             <span className="text-xl font-semibold text-gray-900">
               PlateShare
