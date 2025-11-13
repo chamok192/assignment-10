@@ -12,6 +12,7 @@ import Signup from "../Pages/Signup";
 
 import AvailableFoods from "../Pages/AvailableFoods";
 import AddFood from "../Pages/AddFood";
+import FoodDetails from "../Pages/FoodDetails";
 import PrivateRoute from "./PrivateRoute";
 
 const router = createBrowserRouter([
@@ -44,7 +45,17 @@ const router = createBrowserRouter([
       },
 
       {
+        path: "/foods/:id",
+        element: (
+          <PrivateRoute>
+            <FoodDetails />
+          </PrivateRoute>
+        ),
+      },
+
+      {
         path: "/login",
+
         element: <Login />,
       },
 

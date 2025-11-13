@@ -1,63 +1,63 @@
-import React, { useContext, useMemo, useState } from "react";
+import React, { useContext, useState } from "react";
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../Provider/AuthContext";
 import Container from "../components/Container";
 
-const toTitleCase = (s = "") =>
-  s
+function formatName(s) {
+  if (!s) return "";
+  return s
     .toString()
     .trim()
     .split(/\s+/)
     .map((w) => w.charAt(0).toUpperCase() + w.slice(1).toLowerCase())
     .join(" ");
+}
 
-const AddFood = () => {
+function AddFood() {
   const { user, loading } = useContext(AuthContext);
   const navigate = useNavigate();
   const location = useLocation();
 
-  const [form, setForm] = useState({
-    foodName: "",
-    foodImage: "",
-    foodImageFile: null,
-    foodQuantity: "",
-    pickupLocation: "",
-    expireDate: "",
-    additionalNotes: "",
-  });
+  const [foodName, setFoodName] = useState("");
+
+  const [foodImage, setFoodImage] = useState("");
+
+  const [foodImageFile, setFoodImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState("");
+  const [foodQuantity, setFoodQuantity] = useState("");
+
+  const [pickupLocation, setPickupLocation] = useState("");
+
+  const [expireDate, setExpireDate] = useState("");
+
+  const [additionalNotes, setAdditionalNotes] = useState("");
 
   const [submitting, setSubmitting] = useState(false);
+
   const [message, setMessage] = useState("");
+
   const [error, setError] = useState("");
-  const [imagePreview, setImagePreview] = useState("");
 
-  const today = useMemo(() => {
-    const d = new Date();
-    return new Date(d.getTime() - d.getTimezoneOffset() * 60000)
-      .toISOString()
-      .split("T")[0];
-  }, []);
+  const today = new Date().toISOString().split("T")[0];
 
-  const onChange = (e) => {
-    const { name, value, files } = e.target;
-    if (name === "foodImageFile") {
-      const file = files && files[0] ? files[0] : null;
-      setForm((s) => ({ ...s, foodImageFile: file }));
-      if (file) {
-        const url = URL.createObjectURL(file);
-        setImagePreview(url);
-      } else {
-        setImagePreview("");
-      }
-      return;
+  function onFileChange(e) {
+    const file = e.target.files && e.target.files[0] ? e.target.files[0] : null;
+    setFoodImageFile(file);
+    if (file) {
+      const url = URL.createObjectURL(file);
+      setImagePreview(url);
+    } else {
+      setImagePreview("");
     }
-    setForm((s) => ({ ...s, [name]: value }));
-    if (name === "foodImage") {
-      setImagePreview(value || "");
-    }
-  };
+  }
 
-  const submit = async (e) => {
+  function onUrlChange(e) {
+    const value = e.target.value;
+    setFoodImage(value);
+    setImagePreview(value);
+  }
+
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setMessage("");
     setError("");
@@ -65,56 +65,81 @@ const AddFood = () => {
       setError("You must be logged in to add food.");
       return;
     }
-    if (!form.foodImage.trim() && !form.foodImageFile) {
-      setError("Provide an image URL or upload a file.");
+
+    if (
+      !foodName.trim() ||
+      !foodQuantity.trim() ||
+      !pickupLocation.trim() ||
+      !expireDate ||
+      (!foodImage.trim() && !foodImageFile)
+    ) {
+      setError("Please fill in all required fields.");
       return;
     }
     setSubmitting(true);
     try {
-      const donorName = toTitleCase(user.displayName || "Anonymous");
-      let imageForPayload = form.foodImage.trim();
-      if (form.foodImageFile) {
+      let imageForPayload = foodImage.trim();
+      if (foodImageFile) {
         imageForPayload = await new Promise((resolve, reject) => {
           const reader = new FileReader();
           reader.onload = () => resolve(reader.result);
-          reader.onerror = reject;
-          reader.readAsDataURL(form.foodImageFile);
+          reader.onerror = () => reject(new Error("Failed to read file"));
+          reader.readAsDataURL(foodImageFile);
         });
       }
+
       const payload = {
-        foodName: form.foodName.trim(),
+        foodName: foodName.trim(),
+
         foodImage: imageForPayload,
-        foodQuantity: form.foodQuantity.trim(),
-        pickupLocation: form.pickupLocation.trim(),
-        expireDate: form.expireDate,
-        additionalNotes: form.additionalNotes.trim(),
-        donatorName: donorName,
+        foodQuantity: foodQuantity.trim(),
+
+        pickupLocation: pickupLocation.trim(),
+
+        expireDate: expireDate,
+
+        additionalNotes: additionalNotes.trim(),
+
+        donatorName: formatName(user.displayName || "Anonymous"),
+
         donatorEmail: user.email || "",
+
         donatorImage: user.photoURL || "",
+
         availability: "Available",
+
         food_status: "Available",
+
         createdAt: new Date().toISOString(),
       };
+
       const res = await fetch("http://localhost:3000/foods", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
       });
+
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
         throw new Error(data?.message || "Failed to add food.");
       }
+
       setMessage("Food added successfully!");
-      setForm({
-        foodName: "",
-        foodImage: "",
-        foodImageFile: null,
-        foodQuantity: "",
-        pickupLocation: "",
-        expireDate: "",
-        additionalNotes: "",
-      });
+
+      setFoodName("");
+
+      setFoodImage("");
+
+      setFoodImageFile(null);
       setImagePreview("");
+      setFoodQuantity("");
+
+      setPickupLocation("");
+
+      setExpireDate("");
+
+      setAdditionalNotes("");
+
       setTimeout(() => navigate("/available-foods"), 800);
     } catch (err) {
       setError(err?.message || "Something went wrong while adding food.");
@@ -139,7 +164,7 @@ const AddFood = () => {
     return <Navigate to="/login" state={{ from: location }} replace />;
   }
 
-  const donorNameDisplay = toTitleCase(user.displayName || "Anonymous");
+  const donorNameDisplay = formatName(user.displayName || "Anonymous");
 
   return (
     <Container>
@@ -180,7 +205,7 @@ const AddFood = () => {
         </div>
 
         <form
-          onSubmit={submit}
+          onSubmit={handleSubmit}
           className="bg-white border border-gray-200 rounded-2xl shadow-sm p-6 space-y-5"
         >
           <div>
@@ -189,9 +214,8 @@ const AddFood = () => {
             </label>
             <input
               type="text"
-              name="foodName"
-              value={form.foodName}
-              onChange={onChange}
+              value={foodName}
+              onChange={(e) => setFoodName(e.target.value)}
               placeholder="e.g., Veggie Pasta"
               className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-green-600"
               required
@@ -202,13 +226,13 @@ const AddFood = () => {
             <label className="block text-sm font-medium text-gray-700">
               Food Image
             </label>
+
             <div className="mt-1 grid grid-cols-1 md:grid-cols-2 gap-4">
               <div>
                 <input
                   type="file"
-                  name="foodImageFile"
                   accept="image/*"
-                  onChange={onChange}
+                  onChange={onFileChange}
                   className="block w-full text-sm text-gray-700 file:mr-4 file:rounded-lg file:border-0 file:bg-green-600 file:px-4 file:py-2 file:text-sm file:font-semibold file:text-white hover:file:bg-green-700 cursor-pointer"
                 />
                 <p className="mt-1 text-xs text-gray-500">
@@ -218,9 +242,8 @@ const AddFood = () => {
               <div>
                 <input
                   type="url"
-                  name="foodImage"
-                  value={form.foodImage}
-                  onChange={onChange}
+                  value={foodImage}
+                  onChange={onUrlChange}
                   placeholder="https://example.com/image.jpg"
                   className="w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-green-600"
                 />
@@ -229,15 +252,15 @@ const AddFood = () => {
                 </p>
               </div>
             </div>
-            {(imagePreview || form.foodImage) && (
+            {imagePreview ? (
               <div className="mt-3">
                 <img
-                  src={imagePreview || form.foodImage}
+                  src={imagePreview}
                   alt="Food preview"
                   className="w-full max-h-64 object-cover rounded-lg border"
                 />
               </div>
-            )}
+            ) : null}
           </div>
 
           <div>
@@ -246,9 +269,8 @@ const AddFood = () => {
             </label>
             <input
               type="text"
-              name="foodQuantity"
-              value={form.foodQuantity}
-              onChange={onChange}
+              value={foodQuantity}
+              onChange={(e) => setFoodQuantity(e.target.value)}
               placeholder='e.g., "Serves 2 people"'
               className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-green-600"
               required
@@ -261,9 +283,8 @@ const AddFood = () => {
             </label>
             <input
               type="text"
-              name="pickupLocation"
-              value={form.pickupLocation}
-              onChange={onChange}
+              value={pickupLocation}
+              onChange={(e) => setPickupLocation(e.target.value)}
               placeholder="e.g., 123 Main St, City"
               className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-green-600"
               required
@@ -277,9 +298,8 @@ const AddFood = () => {
               </label>
               <input
                 type="date"
-                name="expireDate"
-                value={form.expireDate}
-                onChange={onChange}
+                value={expireDate}
+                onChange={(e) => setExpireDate(e.target.value)}
                 min={today}
                 className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-green-600"
                 required
@@ -305,9 +325,8 @@ const AddFood = () => {
               Additional Notes
             </label>
             <textarea
-              name="additionalNotes"
-              value={form.additionalNotes}
-              onChange={onChange}
+              value={additionalNotes}
+              onChange={(e) => setAdditionalNotes(e.target.value)}
               rows={4}
               placeholder="e.g., Contains nuts, prepared today, keep refrigerated..."
               className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-green-600"
@@ -327,6 +346,6 @@ const AddFood = () => {
       </div>
     </Container>
   );
-};
+}
 
 export default AddFood;
