@@ -104,9 +104,9 @@ function FoodCard({ foods }) {
           >
             View Details
           </Link>
-          <button className="flex-1 bg-green-600 text-white py-2.5 px-4 rounded-lg font-medium hover:bg-green-700 transition-colors text-sm">
+          {/* <button className="flex-1 bg-green-600 text-white py-2.5 px-4 rounded-lg font-medium hover:bg-green-700 transition-colors text-sm">
             Request
-          </button>
+          </button> */}
         </div>
       </div>
     </div>
