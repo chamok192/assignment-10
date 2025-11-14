@@ -8,6 +8,7 @@ import {
 } from "react-router-dom";
 
 import Container from "../components/Container";
+import SpinnerSVG from "../components/SpinnerSVG";
 
 import { AuthContext } from "../Provider/AuthContext";
 import toast from "react-hot-toast";
@@ -142,8 +143,8 @@ const FoodDetails = () => {
     <Container>
       <div className="max-w-5xl mx-auto py-10">
         {loading ? (
-          <div className="text-center text-gray-600">
-            Loading food details...
+          <div className="py-8 flex flex-col items-center justify-center">
+            <SpinnerSVG size={56} label="Loading food details..." />
           </div>
         ) : err ? (
           <div className="rounded-lg bg-red-50 text-red-700 text-sm px-4 py-3">

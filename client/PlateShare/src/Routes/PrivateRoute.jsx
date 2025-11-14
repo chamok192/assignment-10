@@ -1,6 +1,10 @@
 import React, { useContext } from "react";
+
 import { Navigate, Outlet, useLocation } from "react-router-dom";
+
 import { AuthContext } from "../Provider/AuthContext";
+
+import SpinnerSVG from "../components/SpinnerSVG";
 
 const PrivateRoute = ({ children }) => {
   const { user, loading } = useContext(AuthContext);
@@ -9,7 +13,7 @@ const PrivateRoute = ({ children }) => {
   if (loading) {
     return (
       <div className="min-h-[60vh] flex items-center justify-center">
-        <div className="text-gray-600 text-sm">Checking authentication...</div>
+        <SpinnerSVG size={56} label="Checking authentication..." />
       </div>
     );
   }

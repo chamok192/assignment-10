@@ -5,7 +5,9 @@ import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../Provider/AuthContext";
 
 import Container from "../components/Container";
+
 import toast from "react-hot-toast";
+import SpinnerSVG from "../components/SpinnerSVG";
 
 function formatName(s) {
   if (!s) return "";
@@ -165,8 +167,16 @@ function AddFood() {
     return (
       <Container>
         <div className="max-w-3xl mx-auto py-10">
-          <div className="text-center text-sm text-gray-600">
-            Checking authentication...
+          <div className="flex flex-col items-center">
+            <SpinnerSVG
+              size={56}
+              strokeWidth={6}
+              label="Checking authentication..."
+            />
+
+            <div className="mt-3 text-sm text-gray-600">
+              Checking authentication...
+            </div>
           </div>
         </div>
       </Container>

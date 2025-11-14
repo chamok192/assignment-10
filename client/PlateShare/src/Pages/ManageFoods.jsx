@@ -212,7 +212,47 @@ function ManageFoods() {
         </div>
 
         {loading ? (
-          <div className="text-center text-gray-600">Loading your foods...</div>
+          <div className="py-8 flex flex-col items-center justify-center">
+            <svg
+              width="56"
+              height="56"
+              viewBox="0 0 100 100"
+              className="block"
+              xmlns="http://www.w3.org/2000/svg"
+            >
+              <circle
+                cx="50"
+                cy="50"
+                r="40"
+                fill="none"
+                className="text-green-200"
+                stroke="currentColor"
+                strokeWidth="6"
+                strokeLinecap="round"
+                strokeDasharray="1.5 12"
+                opacity="0.5"
+              />
+              <g
+                className="animate-spin origin-center"
+                style={{ transformOrigin: "50% 50%" }}
+              >
+                <circle
+                  cx="50"
+                  cy="50"
+                  r="40"
+                  fill="none"
+                  className="text-green-600"
+                  stroke="currentColor"
+                  strokeWidth="6"
+                  strokeLinecap="round"
+                  strokeDasharray="1.5 12"
+                />
+              </g>
+            </svg>
+            <div className="mt-3 text-sm text-gray-600">
+              Loading your foods...
+            </div>
+          </div>
         ) : err ? (
           <div className="rounded-lg bg-red-50 text-red-700 text-sm px-4 py-3">
             {err}

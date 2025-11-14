@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import SpinnerSVG from "./SpinnerSVG";
 
 function FeaturedFoods() {
   const [foods, setFoods] = useState([]);
@@ -50,7 +51,18 @@ function FeaturedFoods() {
           </p>
         </div>
 
-        {loading && <div className="text-center text-gray-600">Loading...</div>}
+        {loading && (
+          <div className="py-8 flex flex-col items-center justify-center">
+            <SpinnerSVG
+              size={48}
+              strokeWidth={5}
+              label="Loading featured foods..."
+            />
+            <div className="mt-2 text-sm text-gray-600">
+              Loading featured foods...
+            </div>
+          </div>
+        )}
 
         {!loading && err && (
           <div className="text-center text-red-600">{err}</div>
