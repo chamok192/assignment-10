@@ -42,15 +42,26 @@ const Navbar = () => {
       </NavLink>
 
       {currentUser && (
-        <NavLink
-          to="/add-food"
-          className={({ isActive }) =>
-            `${linkBase} ${isActive ? linkActive : linkInactive}`
-          }
-          onClick={onClick}
-        >
-          Add Food
-        </NavLink>
+        <>
+          <NavLink
+            to="/add-food"
+            className={({ isActive }) =>
+              `${linkBase} ${isActive ? linkActive : linkInactive}`
+            }
+            onClick={onClick}
+          >
+            Add Food
+          </NavLink>
+          <NavLink
+            to="/manage-foods"
+            className={({ isActive }) =>
+              `${linkBase} ${isActive ? linkActive : linkInactive}`
+            }
+            onClick={onClick}
+          >
+            Manage Foods
+          </NavLink>
+        </>
       )}
     </>
   );

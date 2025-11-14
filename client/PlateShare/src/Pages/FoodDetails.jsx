@@ -41,7 +41,10 @@ const FoodDetails = () => {
           if (res.ok) {
             data = await res.json();
           }
-        } catch (e) {}
+        } catch {
+          // ignore error and proceed to fallback endpoints
+          void 0;
+        }
         if (!data || (Array.isArray(data) && data.length === 0)) {
           const res2 = await fetch(
             `http://localhost:3000/foods?id=${encodeURIComponent(id)}`,
@@ -58,7 +61,7 @@ const FoodDetails = () => {
             if (Array.isArray(list)) {
               data =
                 list.find((it) => `${id}` === `${it?._id}`) ??
-                list.find((it) => `${id}` === `${it?._id}`);
+                list.find((it) => `${id}` === `${it?.id}`);
             }
           }
         }
@@ -204,7 +207,7 @@ const FoodDetails = () => {
                   </p>
                 </div>
 
-                <div className="flex-shrink-0">
+                      <div className="`flex-shrink-0`">
                   <button
                     type="button"
                     onClick={handleRequest}
