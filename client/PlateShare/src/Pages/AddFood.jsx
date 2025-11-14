@@ -1,7 +1,11 @@
 import React, { useContext, useState } from "react";
+
 import { Navigate, useLocation, useNavigate } from "react-router-dom";
+
 import { AuthContext } from "../Provider/AuthContext";
+
 import Container from "../components/Container";
+import toast from "react-hot-toast";
 
 function formatName(s) {
   if (!s) return "";
@@ -61,8 +65,11 @@ function AddFood() {
     e.preventDefault();
     setMessage("");
     setError("");
+
     if (!user) {
       setError("You must be logged in to add food.");
+
+      toast.error("You must be logged in to add food.");
       return;
     }
 
@@ -74,8 +81,11 @@ function AddFood() {
       (!foodImage.trim() && !foodImageFile)
     ) {
       setError("Please fill in all required fields.");
+
+      toast.error("Please fill in all required fields.");
       return;
     }
+
     setSubmitting(true);
     try {
       let imageForPayload = foodImage.trim();
@@ -125,6 +135,7 @@ function AddFood() {
       }
 
       setMessage("Food added successfully!");
+      toast.success("Food added successfully!");
 
       setFoodName("");
 
@@ -139,10 +150,12 @@ function AddFood() {
       setExpireDate("");
 
       setAdditionalNotes("");
-
       setTimeout(() => navigate("/available-foods"), 800);
     } catch (err) {
-      setError(err?.message || "Something went wrong while adding food.");
+      const msg = err?.message || "Something went wrong while adding food.";
+      setError(msg);
+
+      toast.error(msg);
     } finally {
       setSubmitting(false);
     }

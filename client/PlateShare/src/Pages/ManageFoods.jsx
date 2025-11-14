@@ -1,7 +1,11 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
+
 import { Navigate, useLocation } from "react-router-dom";
+
 import Container from "../components/Container";
+
 import { AuthContext } from "../Provider/AuthContext";
+import toast from "react-hot-toast";
 
 const API_BASE = "http://localhost:3000";
 
@@ -130,7 +134,9 @@ function ManageFoods() {
         throw new Error(data?.message || "Failed to update");
       }
 
+      toast.success("Food updated successfully.");
       setActionMsg("Food updated successfully.");
+
       setFoods((prev) =>
         prev.map((f) => {
           const fid = f?.id ?? f?._id;
@@ -146,7 +152,10 @@ function ManageFoods() {
       }, 600);
     } catch (e) {
       setSaving(false);
+
       setActionMsg(e?.message || "Update failed");
+
+      toast.error(e?.message || "Update failed");
     }
   }
 
@@ -170,8 +179,9 @@ function ManageFoods() {
       setFoods((prev) =>
         prev.filter((f) => `${f?.id ?? f?._id}` !== `${targetId}`),
       );
+      toast.success("Food deleted successfully.");
     } catch (e) {
-      alert(e?.message || "Delete failed");
+      toast.error(e?.message || "Delete failed");
     }
   }
 

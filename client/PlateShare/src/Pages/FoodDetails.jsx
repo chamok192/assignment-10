@@ -1,12 +1,16 @@
 import React, { useContext, useEffect, useMemo, useState } from "react";
+
 import {
   Navigate,
   useLocation,
   useNavigate,
   useParams,
 } from "react-router-dom";
+
 import Container from "../components/Container";
+
 import { AuthContext } from "../Provider/AuthContext";
+import toast from "react-hot-toast";
 
 function toTitleCase(s = "") {
   return String(s)
@@ -26,8 +30,6 @@ const FoodDetails = () => {
   const [loading, setLoading] = useState(true);
   const [err, setErr] = useState("");
   const [requesting, setRequesting] = useState(false);
-  const [requestMsg, setRequestMsg] = useState("");
-  const [requestErr, setRequestErr] = useState("");
 
   useEffect(() => {
     let alive = true;
@@ -93,8 +95,7 @@ const FoodDetails = () => {
 
   async function handleRequest() {
     if (!user || !food?._id) return;
-    setRequestMsg("");
-    setRequestErr("");
+    toast.dismiss();
     setRequesting(true);
     try {
       const payload = {
@@ -113,9 +114,9 @@ const FoodDetails = () => {
         const data = await res.json().catch(() => ({}));
         throw new Error(data?.message || "Failed to request food");
       }
-      setRequestMsg("Request submitted! We'll notify the donor.");
+      toast.success("Request submitted! We'll notify the donor.");
     } catch (e) {
-      setRequestErr(e?.message || "Could not submit request");
+      toast.error(e?.message || "Could not submit request");
     } finally {
       setRequesting(false);
     }
@@ -207,7 +208,7 @@ const FoodDetails = () => {
                   </p>
                 </div>
 
-                      <div className="`flex-shrink-0`">
+                <div className="`flex-shrink-0`">
                   <button
                     type="button"
                     onClick={handleRequest}
@@ -221,16 +222,6 @@ const FoodDetails = () => {
                   >
                     {requesting ? "Requesting..." : "Request Food"}
                   </button>
-                  {requestMsg ? (
-                    <div className="mt-3 rounded bg-green-50 text-green-700 text-sm px-3 py-2">
-                      {requestMsg}
-                    </div>
-                  ) : null}
-                  {requestErr ? (
-                    <div className="mt-3 rounded bg-red-50 text-red-700 text-sm px-3 py-2">
-                      {requestErr}
-                    </div>
-                  ) : null}
                 </div>
               </div>
 

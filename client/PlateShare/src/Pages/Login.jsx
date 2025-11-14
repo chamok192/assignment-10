@@ -2,6 +2,7 @@ import React, { useContext, useState } from "react";
 import { Link, useLocation, useNavigate } from "react-router-dom";
 import { AuthContext } from "../Provider/AuthContext";
 import { FcGoogle } from "react-icons/fc";
+import toast from "react-hot-toast";
 
 const Login = () => {
   const { login, loginWithGoogle } = useContext(AuthContext);
@@ -24,9 +25,11 @@ const Login = () => {
     try {
       await login(email, password);
       setMessage("Login successful");
+      toast.success("Login successful");
       navigate(redirectTo, { replace: true });
     } catch (err) {
       setError(err.message || "Login failed");
+      toast.error(err.message || "Login failed");
     }
   };
 
@@ -36,9 +39,11 @@ const Login = () => {
     try {
       await loginWithGoogle();
       setMessage("Login successful");
+      toast.success("Login successful");
       navigate(redirectTo, { replace: true });
     } catch (err) {
       setError(err.message || "Login failed");
+      toast.error(err.message || "Login failed");
     }
   };
 
