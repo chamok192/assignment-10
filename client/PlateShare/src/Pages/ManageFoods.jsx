@@ -170,20 +170,21 @@ function ManageFoods() {
         `${API_BASE}/foods/${encodeURIComponent(targetId)}`,
         {
           method: "DELETE",
-        },
+        }
       );
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
         throw new Error(data?.message || "Failed to delete");
       }
       setFoods((prev) =>
-        prev.filter((f) => `${f?.id ?? f?._id}` !== `${targetId}`),
+        prev.filter((f) => `${f?.id ?? f?._id}` !== `${targetId}`)
       );
       toast.success("Food deleted successfully.");
     } catch (e) {
       toast.error(e?.message || "Delete failed");
     }
   }
+
 
   if (authLoading) {
     return (
