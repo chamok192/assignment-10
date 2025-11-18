@@ -1,20 +1,6 @@
 import React from "react";
 
-/**
- * SpinnerSVG
- * A small reusable green dotted SVG spinner component.
- *
- * Props:
- * - size: number | string - width/height in px (number) or CSS size (string). Default: 32
- * - strokeWidth: number - thickness of the dots. Default: 5
- * - colorClass: string - Tailwind class for the spinner color. Default: "text-green-600"
- * - trackClass: string - Tailwind class for the track color. Default: "text-green-200"
- * - dash: number - dot length along the circle path. Default: 1.5
- * - gap: number - gap length between dots along the path. Default: 11
- * - duration: string - CSS time for a full spin (e.g., "0.9s", "1.2s"). Default: "0.9s"
- * - label: string - accessible label (also used as <title>); defaults to "Loading"
- * - className: string - extra classes for the wrapper
- */
+
 function SpinnerSVG({
   size = 32,
   strokeWidth = 5,
@@ -26,7 +12,7 @@ function SpinnerSVG({
   label = "Loading",
   className = "",
 }) {
-  // Normalize numeric size to px
+  
   const dim = typeof size === "number" ? `${size}px` : size;
   const r = 40;
   const center = 50;
@@ -48,7 +34,7 @@ function SpinnerSVG({
       >
         <title>{label}</title>
 
-        {/* Track (static, light green dotted circle) */}
+       
         <circle
           cx={center}
           cy={center}
@@ -62,7 +48,7 @@ function SpinnerSVG({
           opacity="0.5"
         />
 
-        {/* Spinner (rotating, solid green dotted circle) */}
+        
         <g
           className="animate-spin origin-center"
           style={{ transformOrigin: "50% 50%", animationDuration: duration }}

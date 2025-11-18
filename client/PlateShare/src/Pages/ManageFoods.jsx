@@ -127,7 +127,7 @@ function ManageFoods() {
           method: "PUT",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify(payload),
-        },
+        }
       );
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
@@ -144,7 +144,7 @@ function ManageFoods() {
             return { ...f, ...payload };
           }
           return f;
-        }),
+        })
       );
       setTimeout(() => {
         setSaving(false);
@@ -203,7 +203,7 @@ function ManageFoods() {
 
   return (
     <Container>
-      <div className="max-w-6xl mx-auto py-10">
+      <div className=" w-[90%] mx-auto py-10">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Manage My Foods</h1>
           <p className="text-gray-600 mt-2">
@@ -262,8 +262,8 @@ function ManageFoods() {
             You haven&apos;t added any foods yet.
           </div>
         ) : (
-          <div className="overflow-x-auto bg-white border border-gray-200 rounded-xl shadow-sm">
-            <table className="min-w-full divide-y divide-gray-200">
+          <div className="overflow-x-scroll md:overflow-x-auto bg-white border border-gray-200 rounded-xl shadow-sm">
+                  <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
                   <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
@@ -320,13 +320,12 @@ function ManageFoods() {
                     </td>
                     <td className="px-4 py-3">
                       <span
-                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${
-                          String(f?.food_status || "")
+                        className={`inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium ${String(f?.food_status || "")
                             .toLowerCase()
                             .includes("available")
                             ? "bg-green-100 text-green-800"
                             : "bg-red-100 text-red-800"
-                        }`}
+                          }`}
                       >
                         {f?.food_status || "Status"}
                       </span>
@@ -382,11 +381,10 @@ function ManageFoods() {
               <form onSubmit={submitUpdate} className="p-6 space-y-4">
                 {actionMsg ? (
                   <div
-                    className={`rounded-md px-3 py-2 text-sm ${
-                      actionMsg.toLowerCase().includes("fail")
+                    className={`rounded-md px-3 py-2 text-sm ${actionMsg.toLowerCase().includes("fail")
                         ? "bg-red-50 text-red-700"
                         : "bg-green-50 text-green-700"
-                    }`}
+                      }`}
                   >
                     {actionMsg}
                   </div>
