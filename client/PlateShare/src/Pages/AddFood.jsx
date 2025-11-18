@@ -32,6 +32,8 @@ function AddFood() {
   const [imagePreview, setImagePreview] = useState("");
   const [foodQuantity, setFoodQuantity] = useState("");
 
+  const [foodCategory, setFoodCategory] = useState("");
+
   const [pickupLocation, setPickupLocation] = useState("");
 
   const [expireDate, setExpireDate] = useState("");
@@ -78,6 +80,7 @@ function AddFood() {
     if (
       !foodName.trim() ||
       !foodQuantity.trim() ||
+      !foodCategory.trim() ||
       !pickupLocation.trim() ||
       !expireDate ||
       (!foodImage.trim() && !foodImageFile)
@@ -104,6 +107,7 @@ function AddFood() {
         foodName: foodName.trim(),
 
         foodImage: imageForPayload,
+        foodCategory: foodCategory.trim(),
         foodQuantity: foodQuantity.trim(),
 
         pickupLocation: pickupLocation.trim(),
@@ -146,6 +150,7 @@ function AddFood() {
 
       setFoodImageFile(null);
       setImagePreview("");
+      setFoodCategory("");
       setFoodQuantity("");
 
       setPickupLocation("");
@@ -285,6 +290,20 @@ function AddFood() {
                 />
               </div>
             ) : null}
+          </div>
+
+          <div>
+            <label className="block text-sm font-medium text-gray-700">
+              Category
+            </label>
+            <input
+              type="text"
+              value={foodCategory}
+              onChange={(e) => setFoodCategory(e.target.value)}
+              placeholder='e.g., "Fast-Food", "Homemade", "Bakery"'
+              className="mt-1 w-full rounded-lg border border-gray-300 px-3 py-2 text-sm outline-none focus:ring-2 focus:ring-green-600"
+              required
+            />
           </div>
 
           <div>

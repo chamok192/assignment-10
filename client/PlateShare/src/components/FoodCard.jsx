@@ -24,7 +24,7 @@ function FoodCard({ foods }) {
     food_status.toLowerCase().includes("available");
 
   return (
-    <div className="bg-white rounded-2xl shadow-lg overflow-hidden max-w-sm mx-auto hover:shadow-xl transition-shadow duration-300">
+    <div className=" bg-white rounded-2xl shadow-lg overflow-hidden max-w-sm mx-auto hover:shadow-xl transition-shadow duration-300">
       <div className="relative">
         <img
           src={
@@ -54,12 +54,12 @@ function FoodCard({ foods }) {
       </div>
 
       <div className="p-4">
-        <h3 className="font-bold text-lg text-gray-900 mb-2">
+        <h3 className=" font-bold text-lg text-gray-900 mb-2">
           {foodName || "Food Item"}
         </h3>
 
         {additionalNotes ? (
-          <p className="text-gray-600 text-sm mb-4 leading-relaxed">
+          <p className="h-25 overflow-auto text-gray-600 text-sm mb-4 leading-relaxed">
             {additionalNotes}
           </p>
         ) : null}

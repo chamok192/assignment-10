@@ -44,14 +44,16 @@ function ManageFoods() {
   const [actionMsg, setActionMsg] = useState("");
 
   const userEmail = user?.email || "";
+  const [requests, setRequests] = useState([]);
 
   const myFoods = useMemo(() => {
     if (!Array.isArray(foods)) return [];
     return foods.filter(
-      (f) => (f?.donatorEmail || "").toLowerCase() === userEmail.toLowerCase(),
+      (f) => (f?.donatorEmail || "").toLowerCase() === userEmail.toLowerCase()
     );
   }, [foods, userEmail]);
 
+  //const allrequests =
   useEffect(() => {
     let alive = true;
     async function load() {
@@ -63,6 +65,14 @@ function ManageFoods() {
         const data = await res.json();
         if (!alive) return;
         setFoods(Array.isArray(data) ? data : []);
+
+        const reqRes = await fetch(
+          `${API_BASE}/requests/owner?email=${encodeURIComponent(userEmail)}`
+        );
+
+        const reqData = await reqRes.json();
+        if (!alive) return;
+        setRequests(Array.isArray(reqData) ? reqData : []);
       } catch (e) {
         if (alive) setErr(e?.message || "Something went wrong");
       } finally {
@@ -159,6 +169,41 @@ function ManageFoods() {
     }
   }
 
+  const handleAccept = async (id) => {
+    try {
+      const res = await fetch(`${API_BASE}/requests/${id}`, {
+        method: "PUT",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ status: "received" }),
+      });
+
+      if (!res.ok) return toast.error("Failed to accept request");
+
+      setRequests((prev) =>
+        prev.map((r) => (r._id === id ? { ...r, status: "received" } : r))
+      );
+
+      toast.success("Request accepted");
+    } catch (err) {
+      toast.error("Error updating request");
+    }
+  };
+
+  const handleReject = async (id) => {
+    try {
+      const res = await fetch(`${API_BASE}/requests/${id}`, {
+        method: "DELETE",
+      });
+
+      if (!res.ok) return toast.error("Failed to reject request");
+      setRequests((prev) => prev.filter((r) => r._id !== id));
+
+      toast.success("Request rejected");
+    } catch (err) {
+      toast.error("Error deleting request");
+    }
+  };
+
   async function handleDelete(food) {
     const targetId = food?.id ?? food?._id;
     if (!targetId) return;
@@ -185,7 +230,6 @@ function ManageFoods() {
     }
   }
 
-
   if (authLoading) {
     return (
       <Container>
@@ -204,7 +248,7 @@ function ManageFoods() {
 
   return (
     <Container>
-      <div className=" w-[90%] mx-auto py-10">
+      <div className="max-w-6xl mx-auto py-10">
         <div className="mb-8">
           <h1 className="text-3xl font-bold text-gray-900">Manage My Foods</h1>
           <p className="text-gray-600 mt-2">
@@ -263,8 +307,8 @@ function ManageFoods() {
             You haven&apos;t added any foods yet.
           </div>
         ) : (
-          <div className="overflow-x-scroll md:overflow-x-auto bg-white border border-gray-200 rounded-xl shadow-sm">
-                  <table className="min-w-full divide-y divide-gray-200">
+          <div className="overflow-x-auto bg-white border border-gray-200 rounded-xl shadow-sm">
+            <table className="min-w-full divide-y divide-gray-200">
               <thead className="bg-gray-50">
                 <tr>
                   <th className="px-4 py-3 text-left text-xs font-semibold text-gray-600 uppercase tracking-wider">
@@ -357,6 +401,77 @@ function ManageFoods() {
             </table>
           </div>
         )}
+        <>
+          <h1 className="text-3xl font-bold text-gray-900 mb-6">
+            Request List
+          </h1>
+
+          <div className="space-y-5">
+            {requests?.length > 0 ? (
+              requests.map((req) => (
+                <div
+                  key={req._id}
+                  className="bg-white rounded-lg shadow-md p-5 border border-gray-200"
+                >
+                  {/* Header */}
+                  <div className="flex items-center justify-between">
+                    <h2 className="text-xl font-semibold text-gray-800">
+                      {req.requesterName}
+                    </h2>
+
+                    <span
+                      className={`px-3 py-1 text-sm rounded-full capitalize ${req.status === "pending"
+                          ? "bg-yellow-100 text-yellow-700"
+                          : req.status === "received"
+                            ? "bg-green-100 text-green-700"
+                            : "bg-red-100 text-red-700"
+                        }`}
+                    >
+                      {req.status}
+                    </span>
+                  </div>
+
+                  {/* Details */}
+                  <div className="mt-3 space-y-1 text-gray-700">
+                    <p>
+                      <strong>Email:</strong> {req.requesterEmail}
+                    </p>
+                    <p>
+                      <strong>Location:</strong> {req.location}
+                    </p>
+                    <p>
+                      <strong>Reason:</strong> {req.reason}
+                    </p>
+                    <p>
+                      <strong>Contact:</strong> {req.contact}
+                    </p>
+                  </div>
+
+                  {/* Buttons */}
+                  {req.status === "pending" && (
+                    <div className="flex gap-3 mt-4">
+                      <button
+                        onClick={() => handleAccept(req._id)}
+                        className="px-4 py-2 bg-green-600 text-white rounded-lg hover:bg-green-700 transition"
+                      >
+                        Accept
+                      </button>
+
+                      <button
+                        onClick={() => handleReject(req._id)}
+                        className="px-4 py-2 bg-red-600 text-white rounded-lg hover:bg-red-700 transition"
+                      >
+                        Reject
+                      </button>
+                    </div>
+                  )}
+                </div>
+              ))
+            ) : (
+              <p className="text-gray-500 mt-4">No requests found.</p>
+            )}
+          </div>
+        </>
 
         {modalOpen ? (
           <div className="fixed inset-0 z-50 flex items-center justify-center">

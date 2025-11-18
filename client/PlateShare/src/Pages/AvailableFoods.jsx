@@ -43,13 +43,15 @@ const AvailableFoods = () => {
             </div>
           </div>
         ) : (
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
             {data
 
               .filter((foods) => foods.food_status === "Available")
 
               .map((foods) => (
-                <FoodCard key={foods._id || foods.id} foods={foods} />
+                <div className="w-full">
+                  <FoodCard key={foods._id || foods.id} foods={foods} />
+                </div>
               ))}
           </div>
         )}
