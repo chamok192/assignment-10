@@ -133,6 +133,7 @@ function AddFood() {
 
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
+        console.log(payload);
         throw new Error(data?.message || "Failed to add food.");
       }
 

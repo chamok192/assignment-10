@@ -1,17 +1,6 @@
 import React from "react";
 
-/**
- * LoadingSpinner
- * A reusable green dotted loading spinner.
- *
- * Props:
- * - size: number (px). Overall width/height. Default: 48
- * - thickness: number (in SVG units relative to 100 viewBox). Default: 6
- * - colorClass: string. Tailwind text color for the spinner. Default: "text-green-600"
- * - trackClass: string. Tailwind text color for the track. Default: "text-green-200"
- * - label: string. Optional accessible label text (also visually shown if provided).
- * - className: string. Optional extra classes for the wrapper.
- */
+
 function LoadingSpinner({
   size = 48,
   thickness = 6,
@@ -20,12 +9,10 @@ function LoadingSpinner({
   label,
   className = "",
 }) {
-  // SVG uses viewBox 0..100, so radius 40 fits well with stroke thickness.
+ 
   const r = 40;
   const center = 50;
 
-  // Dotted effect via strokeDasharray with round linecap.
-  // Adjust these for denser/sparser dots.
   const dash = 1.5;
   const gap = 12;
 
