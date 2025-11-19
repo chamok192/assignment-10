@@ -18,7 +18,7 @@ function FeaturedFoods() {
   useEffect(() => {
     setLoading(true);
     setErr("");
-    fetch("http://localhost:3000/foods")
+    fetch("https://server-a10-chi.vercel.app/foods")
       .then((res) => {
         if (!res.ok) {
           throw new Error("Failed to load foods");

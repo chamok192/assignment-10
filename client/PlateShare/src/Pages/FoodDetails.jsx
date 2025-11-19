@@ -78,7 +78,7 @@ const FoodDetails = () => {
         if (normalizedId) {
           try {
             const res = await fetch(
-              `http://localhost:3000/foods/${encodeURIComponent(normalizedId)}`,
+              `https://server-a10-chi.vercel.app/foods/${encodeURIComponent(normalizedId)}`,
             );
             if (res.ok) {
               const payload = await res.json();
@@ -95,7 +95,7 @@ const FoodDetails = () => {
         }
         if (!data) {
           const res2 = await fetch(
-            `http://localhost:3000/foods?id=${encodeURIComponent(normalizedId)}`,
+            `https://server-a10-chi.vercel.app/foods?id=${encodeURIComponent(normalizedId)}`,
           );
           if (res2.ok) {
             const d2 = await res2.json();
@@ -107,7 +107,7 @@ const FoodDetails = () => {
           }
         }
         if (!data) {
-          const res3 = await fetch("http://localhost:3000/foods");
+          const res3 = await fetch("https://server-a10-chi.vercel.app/foods");
           if (res3.ok) {
             const list = await res3.json();
             if (Array.isArray(list)) {
@@ -162,7 +162,7 @@ const FoodDetails = () => {
     async function loadRequests() {
       try {
         const res = await fetch(
-          `http://localhost:3000/requests?foodId=${encodeURIComponent(foods._id)}`,
+          `https://server-a10-chi.vercel.app/requests?foodId=${encodeURIComponent(foods._id)}`,
         );
         if (!res.ok) throw new Error("Failed to load requests");
         const data = await res.json();
@@ -221,7 +221,7 @@ const FoodDetails = () => {
         status: "pending",
         foodOwnerEmail: foods.donatorEmail || "",
       };
-      const res = await fetch("http://localhost:3000/requests", {
+      const res = await fetch("https://server-a10-chi.vercel.app/requests", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
@@ -246,7 +246,7 @@ const FoodDetails = () => {
     setUpdatingRequestId(targetId);
     try {
       const res = await fetch(
-        `http://localhost:3000/requests/${encodeURIComponent(targetId)}`,
+        `https://server-a10-chi.vercel.app/requests/${encodeURIComponent(targetId)}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },
@@ -268,7 +268,7 @@ const FoodDetails = () => {
       );
       if (nextStatus === "accepted" && foods?._id) {
         const resFood = await fetch(
-          `http://localhost:3000/foods/${encodeURIComponent(foods._id)}`,
+          `https://server-a10-chi.vercel.app/foods/${encodeURIComponent(foods._id)}`,
           {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },

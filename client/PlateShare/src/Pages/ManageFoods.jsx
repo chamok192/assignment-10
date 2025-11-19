@@ -7,7 +7,7 @@ import Container from "../components/Container";
 import { AuthContext } from "../Provider/AuthContext";
 import toast from "react-hot-toast";
 
-const API_BASE = "http://localhost:3000";
+const API_BASE = "https://server-a10-chi.vercel.app/";
 
 function toISODate(value) {
   if (!value) return "";

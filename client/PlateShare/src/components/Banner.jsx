@@ -28,7 +28,7 @@ const Banner = () => {
     let alive = true;
     async function load() {
       try {
-        const res = await fetch("http://localhost:3000/foods");
+        const res = await fetch("https://server-a10-chi.vercel.app/foods");
         if (!res.ok) throw new Error("Failed to load featured foods");
         const data = await res.json();
         if (!alive) return;

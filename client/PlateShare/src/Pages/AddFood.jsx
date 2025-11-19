@@ -129,7 +129,7 @@ function AddFood() {
         createdAt: new Date().toISOString(),
       };
 
-      const res = await fetch("http://localhost:3000/foods", {
+      const res = await fetch("https://server-a10-chi.vercel.app/foods", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(payload),
